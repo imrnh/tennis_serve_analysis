@@ -1,8 +1,0 @@
-numpy
-torch
-sympy
-tqdm
-matplotlib
-scipy
-opencv_python
-tensorboardX

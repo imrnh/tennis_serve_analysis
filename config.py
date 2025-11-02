@@ -1,7 +1,7 @@
 from types import SimpleNamespace
 
 
-
+# Default Configurations.
 default_config = SimpleNamespace(
     OUTPUT_WIDTH = 640,
     OUTPUT_HEIGHT = 360,
@@ -11,8 +11,8 @@ default_config = SimpleNamespace(
 
     # Colors
     court_net_color = (42, 42, 165),
-    ball_color = (0, 255, 255),
     court_line_color=(255, 255, 255)
+    ball_color = (0, 255, 255),
 )
 
 
@@ -28,10 +28,10 @@ court_marker_config = SimpleNamespace(
               (5, 7), (7, 3), (10, 13), (13, 11), (8, 12), (12, 9)],
 )
 
-# Model path
+# Detection Models
 det_model_config = SimpleNamespace(
     player_and_ball_model_path = "pretrained_models/player_and_ball_detection_best.pt",
     net_det_model_path = "pretrained_models/net_detection_best.pt",
 
-    conf_threshold = 0.5,
+    conf_threshold = 0.3,
 )

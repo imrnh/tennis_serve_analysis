@@ -1,4 +1,9 @@
 mediapipe
 ultralytics
 opencv-python
+sympy
 tqdm
+matplotlib
+scipy
+opencv_python
+tensorboardX
