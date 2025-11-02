@@ -11,14 +11,14 @@ default_config = SimpleNamespace(
 
     # Colors
     court_net_color = (42, 42, 165),
-    court_line_color=(255, 255, 255)
+    court_line_color=(255, 255, 255),
     ball_color = (0, 255, 255),
 )
 
 
 # Court Marker Config
 court_marker_config = SimpleNamespace(
-    model_path = "pretrained_models/model_tennis_court_det.pt",
+    model_path = "lib/pretrained_models/model_tennis_court_det.pt",
     use_refine_kps = True,
     use_homography = False,
 
@@ -30,8 +30,8 @@ court_marker_config = SimpleNamespace(
 
 # Detection Models
 det_model_config = SimpleNamespace(
-    player_and_ball_model_path = "pretrained_models/player_and_ball_detection_best.pt",
-    net_det_model_path = "pretrained_models/net_detection_best.pt",
+    player_and_ball_model_path = "lib/pretrained_models/player_and_ball_detection_best.pt",
+    net_det_model_path = "lib/pretrained_models/net_detection_best.pt",
 
     conf_threshold = 0.3,
 )
