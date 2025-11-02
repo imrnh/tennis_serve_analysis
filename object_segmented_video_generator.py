@@ -14,8 +14,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "court_marker"))
 from court_marker import BallTrackerNet
 from court_marker import postprocess, refine_kps
 from court_marker import get_trans_matrix, refer_kps
-from io_utils import read_video, write_video
-from config import court_marker_config, default_config
+from utils import read_video
 from pose_detector import draw_pose_on_image, detect_poses_in_boxes
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -60,7 +59,7 @@ class ObjectSegmentatedVideoGenerator:
         frames, fps = read_video(input_path)
         self.frames_upd = []
         for image in tqdm(frames):
-            image = cv2.resize(image, (default_config.PREPROCESSOR_WIDTH, default_config.PREPROCESSOR_HEIGHT))
+            image = cv2.resize(image, (self.default_config.PREPROCESSOR_WIDTH, self.default_config.PREPROCESSOR_HEIGHT))
 
             # Create the black image.
             black_image = np.zeros_like(image)

@@ -1,7 +1,6 @@
 import argparse
 from object_segmented_video_generator import ObjectSegmentatedVideoGenerator
-from config import court_marker_config, default_config, det_model_config
-from io_utils import write_video
+from utils import court_marker_config, default_config, det_model_config, write_video
 
 def main():
     parser = argparse.ArgumentParser(description="Generate segmented tennis video.")
