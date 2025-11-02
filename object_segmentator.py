@@ -16,7 +16,7 @@ from court_marker import postprocess, refine_kps
 from court_marker import get_trans_matrix, refer_kps
 from io_utils import read_video, write_video
 from config import court_marker_config, default_config
-from pose_det import draw_pose_on_image, detect_poses_in_boxes
+from pose_detector import draw_pose_on_image, detect_poses_in_boxes
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 

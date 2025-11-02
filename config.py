@@ -18,7 +18,7 @@ default_config = SimpleNamespace(
 
 # Court Marker Config
 court_marker_config = SimpleNamespace(
-    model_path = "lib/pretrained_models/model_tennis_court_det.pt",
+    model_path = "bin/pretrained_models/model_tennis_court_det.pt",
     use_refine_kps = True,
     use_homography = False,
 
@@ -30,8 +30,8 @@ court_marker_config = SimpleNamespace(
 
 # Detection Models
 det_model_config = SimpleNamespace(
-    player_and_ball_model_path = "lib/pretrained_models/player_and_ball_detection_best.pt",
-    net_det_model_path = "lib/pretrained_models/net_detection_best.pt",
+    player_and_ball_model_path = "bin/pretrained_models/player_and_ball_detection_best.pt",
+    net_det_model_path = "bin/pretrained_models/net_detection_best.pt",
 
     conf_threshold = 0.3,
 )
