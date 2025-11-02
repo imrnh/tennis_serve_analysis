@@ -39,8 +39,8 @@ class SegmentatedVideoGenerator:
 
         # 4. Class IDs and Confidence threshold.
         self.CONF_THRESHOLD = det_model_config.conf_threshold
-        self.PLAYER_CLASS_ID = 0 # Assumed. Need to check dataset before commit.
-        self.BALL_CLASS_ID = 1
+        self.PLAYER_CLASS_ID = 1 # Player ID set to 1 in the roboflow dataset.
+        self.BALL_CLASS_ID = 0
         self.NET_CLASS_ID = 0 # as this model only detect one class.
 
 
@@ -102,18 +102,16 @@ class SegmentatedVideoGenerator:
             ball_boxes = []
             net_boxes = []
 
+
             # a. Parse Player/Ball results
             # Get the first (and only) result object from the list as we are operating for each image separately. 
             player_results = player_ball_results_list[0] 
-            
-            # Iterate over the .boxes attribute
-            for box in player_results.boxes:
-                conf = box.conf.item()  # Confidence score
+            for box in player_results.boxes: 
+                conf = box.conf.item() 
                 if conf > self.CONF_THRESHOLD:
-                    # Get box coordinates
-                    xyxy = [int(p) for p in box.xyxy[0]]
-                    # Get class id
-                    cls = int(box.cls.item())
+
+                    xyxy = [int(p) for p in box.xyxy[0]] # Get box coordinates
+                    cls = int(box.cls.item()) # Get class id
                     
                     if cls == self.PLAYER_CLASS_ID:
                         player_boxes.append(xyxy)
@@ -128,7 +126,7 @@ class SegmentatedVideoGenerator:
                 if conf > self.CONF_THRESHOLD and cls == self.NET_CLASS_ID:
                     net_boxes.append([int(p) for p in box.xyxy[0]])
 
-            # c. Draw Net (Semi-transparent brown) | We do this first so it's "under" the players and court lines
+            # Draw Net. We do this first so it's "under" the players and court lines
             if net_boxes:
                 overlay = black_image.copy()
                 for x1, y1, x2, y2 in net_boxes:
@@ -139,25 +137,25 @@ class SegmentatedVideoGenerator:
                 black_image = cv2.addWeighted(overlay, alpha, black_image, 1 - alpha, 0)
 
 
-            # d. Draw Player Poses
+            # Draw Player Poses onto the black_image
             if player_boxes:
-                # Get pose data using your function
-                pose_data = detect_poses_in_boxes(image, player_boxes)
-                
-                # Draw poses onto the black_image using your function
+                pose_data = detect_poses_in_boxes(self.mp_pose, image, player_boxes)
                 black_image = draw_pose_on_image(
+                    mp_drawing = self.mp_drawing,
+                    mp_pose= self.mp_pose,
+                    LANDMARK_DRAWING_SPEC = self.LANDMARK_DRAWING_SPEC,
+                    CONNECTION_DRAWING_SPEC= self.CONNECTION_DRAWING_SPEC,
                     original_image_shape=image.shape,
                     all_pose_data=pose_data,
                     target_image=black_image
                 )
 
-            # e. Draw Ball
+            # Draw Ball
             for x1, y1, x2, y2 in ball_boxes:
                 center_x = int((x1 + x2) / 2)
                 center_y = int((y1 + y2) / 2)
-                # Draw a small, filled circle for the ball
-                cv2.circle(black_image, (center_x, center_y),
-                           radius=5, color=self.default_config.ball_color, thickness=-1)
+                
+                cv2.circle(black_image, (center_x, center_y), radius=5, color=self.default_config.ball_color, thickness=-1) # Draw a small, filled circle for the ball
 
 
             # Draw Court Lines | This now draws on top of the net, poses, and ball
@@ -177,26 +175,3 @@ class SegmentatedVideoGenerator:
             self.frames_upd.append(black_image)
         
         return self.frames_upd, fps
-
-
-        #     # Connect pairs with line to create the virtual court.
-        #     for (i, j) in self.court_marker_config.board_line_pairs:
-        #         if (points[i][0] is not None and points[j][0] is not None):
-        #             pt1 = (int(points[i][0]), int(points[i][1]))
-        #             pt2 = (int(points[j][0]), int(points[j][1]))
-        #             black_image = cv2.line(black_image, pt1, pt2, color=(0, 255, 0), thickness=3)
-
-
-        #     # Draw the points on the screen.
-        #     for j in range(len(points)):
-        #         if points[j][0] is not None:
-        #             black_image = cv2.circle(black_image, (int(points[j][0]), int(points[j][1])),
-        #                             radius=0, color=(0, 0, 255), thickness=10)
-                    
-        #     self.frames_upd.append(black_image)
-            
-        
-        # return self.frames_upd, fps
-
-
-    
